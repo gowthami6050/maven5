@@ -1,0 +1,79 @@
+@Library('mylib')_
+pipeline
+{
+    agent any
+    stages
+    {
+        stage('ContDownload_master')
+        {
+            steps
+            {
+                script
+                {
+                    cicd.gitDownload("maven")
+                }
+            }
+        }
+        stage('ContBuild_master')
+        {
+            steps
+            {
+                script
+                {
+                    cicd.mavenBuild()
+                }
+            }
+        }
+        stage('ContDeployment_master')
+        {
+            steps
+            {
+                script
+                {
+                    cicd.tomcatDeploy("DeclarativePipelinewithsharedlibrary","172.31.86.219","test5app")
+                }
+            }
+        }
+         stage('ContTesting_master')
+        {
+            steps
+            {
+                script
+                {
+                    cicd.gitDownload("FunctionalTesting")
+                    cicd.runselenium("DeclarativePipelinewithsharedlibrary")
+                }
+            }
+        }
+        stage('ContDelivery_master')
+        {
+            steps
+            {
+                script
+                {
+                    cicd.tomcatDeploy("DeclarativePipelinewithsharedlibrary","172.31.93.105","prod5app")
+                }
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    }
+}
